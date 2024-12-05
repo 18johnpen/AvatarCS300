@@ -56,15 +56,18 @@ ApplicationWindow {
                         spacing: 10
 
                         // Control Mode
-                        RowLayout {
+                        GroupBox {
                             Layout.alignment: Qt.AlignHCenter
-                            spacing: 10
-                            RadioButton {
-                                text: "Manual Control"
-                                checked: true
-                            }
-                            RadioButton {
-                                text: "Autopilot"
+                            Layout.fillWidth: true
+                            RowLayout {
+                                spacing: 10
+                                RadioButton {
+                                    text: "Manual Control"
+                                    checked: true
+                                }
+                                RadioButton {
+                                    text: "Autopilot"
+                                }
                             }
                         }
 
@@ -76,7 +79,7 @@ ApplicationWindow {
                             Layout.alignment: Qt.AlignHCenter
 
                             Image {
-                                source: "brainwave-prediction-app/images/brain.png"
+                                source: "images/brain.png"
                                 width: 130
                                 height: 130
                                 anchors.centerIn: parent
@@ -84,8 +87,8 @@ ApplicationWindow {
                             }
 
                             Button {
-                                width: 130
-                                height: 130
+                                width: 120
+                                height: 20
                                 anchors.centerIn: parent
                                 background: Item {} // No background
                                 contentItem: Text {
@@ -93,7 +96,6 @@ ApplicationWindow {
                                     color: "white" // Set text color to white
                                     anchors.centerIn: parent
                                 }
-                                onClicked: backend.readMyMind()
                             }
                         }
 
@@ -111,7 +113,7 @@ ApplicationWindow {
 
                             // Header with white background
                             RowLayout {
-                                spacing: 1
+                                spacing: 2
                                 Rectangle {
                                     color: "white"
                                     width: 145
@@ -137,10 +139,12 @@ ApplicationWindow {
                             }
 
                             ListView {
-                                id: predictionListView
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
-                                model: ListModel {}
+                                model: ListModel {
+                                    ListElement { count: "1"; label: "Response A" }
+                                    ListElement { count: "2"; label: "Response B" }
+                                }
                                 delegate: RowLayout {
                                     spacing: 150
                                     Text { text: model.count; color: "white"; width: 80 }
@@ -160,7 +164,6 @@ ApplicationWindow {
                                 background: Rectangle {
                                     color: "#1b3a4b"
                                 } 
-                                onClicked: backend.notWhatIWasThinking(manualInput.text)
                             }
                             Button {
                                 text: "Execute"
@@ -169,7 +172,6 @@ ApplicationWindow {
                                 background: Rectangle {
                                     color: "#1b3a4b"
                                 } 
-                                onClicked: backend.executeAction()
                             }
                         }
 
@@ -180,8 +182,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignHCenter
                             TextField {
-                                id: manualInput
-                                placeholderText: "Manual Command"
+                                placeholderText: "Manual Command (Optional)"
                                 Layout.preferredWidth: 400
                                 Layout.alignment: Qt.AlignHCenter
                             }
@@ -191,8 +192,7 @@ ApplicationWindow {
                                 height: 40
                                 background: Rectangle {
                                     color: "#1b3a4b"
-                                }
-                                onClicked: backend.keepDroneAlive()
+                                }                            
                             }
                         }
 
@@ -202,10 +202,11 @@ ApplicationWindow {
                             Layout.preferredWidth: 230
                             Layout.preferredHeight: 170
                             ListView {
-                                id: flightLogView
                                 Layout.preferredWidth: 230
                                 Layout.preferredHeight: 170
-                                model: ListModel {}
+                                model: ListModel {
+                                    ListElement { log: "Log Entry 1" }
+                                }
                                 delegate: Text {
                                     text: log
                                     color: "white"
@@ -220,7 +221,7 @@ ApplicationWindow {
                             color: "#1b3a4b" // Dark blue background
 
                             Image {
-                                source: "brainwave-prediction-app/images/connect.png"
+                                source: "images/connect.png"
                                 width: 80
                                 height: 80
                                 anchors.centerIn: parent
@@ -229,7 +230,7 @@ ApplicationWindow {
 
                             Button {
                                 width: 80
-                                height: 80
+                                height: 20
                                 anchors.centerIn: parent
                                 background: Item {} // No background
                                 contentItem: Text {
@@ -237,7 +238,6 @@ ApplicationWindow {
                                     color: "white" // Set text color to white
                                     anchors.centerIn: parent
                                 }
-                                onClicked: backend.connectDrone()
                             }
                         }
                     }
@@ -256,7 +256,7 @@ ApplicationWindow {
 
                             // Header with white background
                             RowLayout {
-                                spacing: 1
+                                spacing: 2
                                 Rectangle {
                                     color: "white"
                                     width: 230
@@ -316,7 +316,6 @@ ApplicationWindow {
                             Layout.alignment: Qt.AlignRight
 
                             TextArea {
-                                id: consoleLog
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
                                 text: "Console output here..."
@@ -331,7 +330,7 @@ ApplicationWindow {
                 color: "#4a5b7b"
                 ScrollView {
                     anchors.centerIn: parent
-                    width: Math.min(parent.width * 0.9, 600)
+                    width: Math.min(parent.width * 0.9, 600) // Set a maximum width
                     height: Math.min(parent.height * 0.9, contentHeight)
                     clip: true
 
